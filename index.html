@@ -332,7 +332,7 @@
   </style>
   <script type="module">
     // Importar configuración centralizada
-    import { SUPABASE_CONFIG } from 'config.js';
+    import { SUPABASE_CONFIG } from './config.js';
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
     
     const supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
