@@ -331,10 +331,11 @@
     }
   </style>
   <script type="module">
+    // Importar configuración centralizada
+    import { SUPABASE_CONFIG } from './config.js';
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-    const SUPABASE_URL = "https://okasjgfuqftbiqusyrpi.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rYXNqZ2Z1cWZ0YmlxdXN5cnBpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ4NjU4MTcsImV4cCI6MjA4MDQ0MTgxN30.ROtN57SxMj44UFntnMgqwzFSG0PVL_nybaCA2lFAHrk";
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+    const supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
 
     async function agregarProducto() {
       const nombre = document.getElementById("nombre").value.trim();
