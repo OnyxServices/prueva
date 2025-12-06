@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mis Compras</title>
+<script type="module" src="main.js"></script>
+</head>
+<body>
+    <h1>Gestión de Compras</h1>
+
+    <div>
+        <label>Saldo inicial: </label>
+        <input type="number" id="saldo" placeholder="Monto a invertir">
+        <button id="setSaldo">Establecer Saldo</button>
+    </div>
+
+    <hr>
+
+    <div>
+        <label>Producto: </label>
+        <input type="text" id="nombreProducto">
+        <label>Cantidad: </label>
+        <input type="number" id="cantidadProducto">
+        <label>Precio: </label>
+        <input type="number" id="precioProducto">
+        <button id="agregarProducto">Agregar Producto</button>
+    </div>
+
+    <h3>Saldo restante: <span id="saldoRestante">0</span></h3>
+    <ul id="listaCompras"></ul>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
