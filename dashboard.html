@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard de Productos</title>
+  <style>
+    :root {
+      --primary-dark: #1a1a2e;
+      --secondary-dark: #16213e;
+      --accent-color: #0ea5e9;
+      --accent-hover: #0284c7;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --success: #10b981;
+      --text-light: #f8fafc;
+      --text-muted: #94a3b8;
+      --card-bg: #1e293b;
+      --border-color: #334155;
+      --input-bg: #0f172a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+      color: var(--text-light);
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, var(--accent-color), #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* Control Panel */
+    .control-panel {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 30px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .stats {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent-color);
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Button Styles */
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-color), #2563eb);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--accent-hover), #1d4ed8);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(14, 165, 233, 0.4);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: linear-gradient(135deg, var(--danger-hover), #b91c1c);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(135deg, #0da271, #047857);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--accent-color);
+      color: var(--accent-color);
+    }
+
+    .btn-outline:hover {
+      background: var(--accent-color);
+      color: white;
+    }
+
+    /* Table Styles */
+    .table-container {
+      background: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    thead {
+      background: linear-gradient(90deg, var(--secondary-dark), var(--primary-dark));
+    }
+
+    th {
+      padding: 20px 15px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--accent-color);
+      border-bottom: 2px solid var(--border-color);
+      font-size: 1.1rem;
+    }
+
+    td {
+      padding: 18px 15px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-light);
+    }
+
+    tr:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .highlight {
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .badge-success {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--success);
+    }
+
+    .badge-warning {
+      background: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+    }
+
+    /* Status Messages */
+    #status {
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 12px;
+      background: rgba(16, 185, 129, 0.1);
+      border-left: 4px solid var(--success);
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    .status-error {
+      background: rgba(239, 68, 68, 0.1) !important;
+      border-left-color: var(--danger) !important;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 10px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .control-panel {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+      }
+      
+      .stats {
+        justify-content: center;
+        gap: 20px;
+      }
+      
+      .stat-value {
+        font-size: 1.5rem;
+      }
+      
+      th, td {
+        padding: 12px 10px;
+        font-size: 0.9rem;
+      }
+      
+      .btn {
+        width: 100%;
+        padding: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .stat-value {
+        font-size: 1.3rem;
+      }
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: var(--accent-color);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📊 Dashboard de Productos</h1>
+      <p class="subtitle">Visualización y gestión completa de tu inventario</p>
+    </header>
+
+    <!-- Control Panel -->
+    <div class="control-panel">
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-value" id="totalProducts">0</div>
+          <div class="stat-label">Productos Totales</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="totalValue">$0.00</div>
+          <div class="stat-label">Valor Total</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="totalItems">0</div>
+          <div class="stat-label">Items en Stock</div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button onclick="window.location.href='index.html'" class="btn btn-outline">
+          ← Volver
+        </button>
+        <button onclick="cargarProductos()" class="btn btn-success">
+          🔄 Recargar
+        </button>
+      </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container">
+      <table id="productsTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Valor Total</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Products will be loaded here -->
+        </tbody>
+      </table>
+      
+      <!-- Empty State -->
+      <div id="emptyState" class="empty-state" style="display: none;">
+        <div style="font-size: 4rem; margin-bottom: 20px; opacity: 0.5;">📦</div>
+        <h3 style="color: var(--text-muted); margin-bottom: 10px;">No hay productos registrados</h3>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">Agrega productos desde la página principal</p>
+        <button onclick="window.location.href='index.html'" class="btn btn-outline">
+          ← Ir a Agregar Productos
+        </button>
+      </div>
+    </div>
+
+    <!-- Status Messages -->
+    <div id="status"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabase = window.supabase.createClient(
+      "https://xwdqhycpndqgeasqotzw.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh3ZHFoeWNwbmRxZ2Vhc3FvdHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5NDQwNTEsImV4cCI6MjA4MDUyMDA1MX0.wF57-5tLs2T-VYQvcmQ69-JsJWp-DmnCJ86ZQ79y97Y"
+    );
+
+    async function cargarProductos() {
+      const statusEl = document.getElementById('status');
+      const tbody = document.querySelector("#productsTable tbody");
+      const emptyState = document.getElementById('emptyState');
+      const reloadBtn = document.querySelector('.btn-success');
+      
+      statusEl.textContent = '⏳ Cargando productos...';
+      statusEl.classList.remove('status-error');
+      reloadBtn.innerHTML = '<span class="loading"></span> Cargando...';
+      reloadBtn.disabled = true;
+
+      try {
+        const { data, error } = await supabase
+          .from("products")
+          .select("*")
+          .order("id", { ascending: true });
+
+        if (error) throw error;
+
+        // Update statistics
+        updateStatistics(data);
+
+        // Clear table
+        tbody.innerHTML = '';
+
+        if (data.length === 0) {
+          emptyState.style.display = 'block';
+          document.querySelector("#productsTable").style.display = 'none';
+        } else {
+          emptyState.style.display = 'none';
+          document.querySelector("#productsTable").style.display = 'table';
+          
+          // Populate table
+          data.forEach((p) => {
+            const total = p.price * p.quantity;
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td><span class="highlight">#${p.id}</span></td>
+              <td><strong>${p.name}</strong></td>
+              <td>
+                <span class="badge ${p.quantity > 10 ? 'badge-success' : 'badge-warning'}">
+                  ${p.quantity} unidades
+                </span>
+              </td>
+              <td>$${p.price.toFixed(2)}</td>
+              <td><strong>$${total.toFixed(2)}</strong></td>
+              <td>
+                <button onclick="eliminarProducto(${p.id})" class="btn btn-danger" style="padding: 8px 16px; font-size: 0.9rem;">
+                  🗑️ Eliminar
+                </button>
+              </td>
+            `;
+            tbody.appendChild(row);
+          });
+        }
+
+        statusEl.textContent = `✅ ${data.length} productos cargados correctamente`;
+        setTimeout(() => statusEl.textContent = '', 3000);
+      } catch (error) {
+        statusEl.textContent = '❌ Error al cargar productos: ' + error.message;
+        statusEl.classList.add('status-error');
+      } finally {
+        reloadBtn.innerHTML = '🔄 Recargar';
+        reloadBtn.disabled = false;
+      }
+    }
+
+    function updateStatistics(data) {
+      const totalProducts = data.length;
+      const totalItems = data.reduce((sum, p) => sum + p.quantity, 0);
+      const totalValue = data.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+      
+      document.getElementById('totalProducts').textContent = totalProducts;
+      document.getElementById('totalItems').textContent = totalItems;
+      document.getElementById('totalValue').textContent = `$${totalValue.toFixed(2)}`;
+    }
+
+    async function eliminarProducto(id) {
+      if (!confirm('¿Seguro que deseas eliminar este producto?\nEsta acción no se puede deshacer.')) return;
+
+      const statusEl = document.getElementById('status');
+      statusEl.textContent = '⏳ Eliminando producto...';
+      statusEl.classList.remove('status-error');
+
+      try {
+        const { error } = await supabase
+          .from("products")
+          .delete()
+          .eq("id", id);
+
+        if (error) throw error;
+
+        statusEl.textContent = '✅ Producto eliminado correctamente';
+        cargarProductos(); // Refresh table
+        setTimeout(() => statusEl.textContent = '', 3000);
+      } catch (error) {
+        statusEl.textContent = '❌ Error al eliminar: ' + error.message;
+        statusEl.classList.add('status-error');
+      }
+    }
+
+    // Load products on page load
+    document.addEventListener('DOMContentLoaded', cargarProductos);
+    
+    // Auto-refresh every 30 seconds
+    setInterval(cargarProductos, 30000);
+  </script>
+</body>
+</html>
